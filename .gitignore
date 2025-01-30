@@ -6,4 +6,8 @@ scripts/__pycache__/
 *.DS_STORE
 *.tif
 scripts/old/
-
+data/NHDPLUS_H_1802_HU4_GDB.*
+*.tiff
+data/modis_SDD/*
+*.zip
+/data/tifs/*
