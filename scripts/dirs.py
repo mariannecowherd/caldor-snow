@@ -1,5 +1,6 @@
 #!/bin/bash/
 
-homedir = '/global/home/users/cowherd/cssltimeseries/'
-rawdatadir = '/global/scratch/users/cowherd/CSSLdata/'
-datadir = homedir + 'data/'
+projdir = '/Users/cowherd/Documents/caldor-snow'
+asodatadir = '/Users/cowherd/Documents/ASO'
+datadir = projdir + '/data'
+bgdir = '/Users/cowherd/Documents/backgroundfiles' 
