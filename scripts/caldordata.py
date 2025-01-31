@@ -13,9 +13,9 @@ from util import make_modis_ds
 stylesheet = '/Users/cowherd/Documents/mplstyles/marianne.mplstyle'
 
 # Load shapefiles
-caldor = gpd.read_file(f'{datadir}/caldor.shp')
+caldor = gpd.read_file(f'{datadir}/vector/caldor.shp')
 caldor = caldor.to_crs('epsg:4326')
-watershed = gpd.read_file(f'{datadir}/eldoradohuc8.shp')
+watershed = gpd.read_file(f'{datadir}/vector/eldoradohuc8.shp')
 meta = gpd.read_file(f'{datadir}/caldormeta.csv')
 nhd3 = gpd.read_file(f'{datadir}/NHD_H_18020129_HU8_GDB.gdb', driver= 'FileGDB', layer = 'NHDFlowline')
 usa = gpd.read_file(f'{bgdir}/geoBoundaries-USA-ADM1_simplified.shp') 
@@ -71,7 +71,7 @@ mtbs_rdnbr = mtbs_rdnbr.rio.reproject('EPSG:4326')
 
 
 asofn = glob.glob(f'{asodatadir}/*American*/*American*swe_50m.tif')[0]
-ds_50m = xr.open_rasterio(asofn) # .rio.reproject('epsg:4326')
+ds_50m = xr.open_rasterio(asofn).rio.reproject('epsg:4326')
 srtm = srtm.rio.write_crs('epsg:4326').rename({'lat':'y','lon':'x'})
 srtm_50 = srtm.rio.reproject_match(ds_50m)
 
@@ -92,8 +92,14 @@ aspect_da = xr.DataArray(aspect_data, coords=srtm.coords, dims=srtm.dims)
 # Create an xarray dataset for the aspect
 aspect_50 = xr.Dataset({'aspect': aspect_da})
 
-## modis data ## 
+# LFCC data
+lfcc_area = xr.open_dataset('../data/lfcc_area.nc')
+lfcc_area = lfcc_area.rio.write_crs('epsg:4326')
+band_data_rp = lfcc_area.band_data.rio.reproject_match(ds_50m)
+log_area_rp =  lfcc_area.log_area.rio.reproject_match(ds_50m)
 
+
+## modis data ## 
 modis_SCF = make_modis_ds(f'{datadir}/modis_SCF/')
 modis_SDD = make_modis_ds(f'{datadir}/modis_SDD/')
 
